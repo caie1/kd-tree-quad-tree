@@ -1,6 +1,6 @@
-package project;
+package projects;
 
-import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.Scanner;
 
 class NodeK {
@@ -43,6 +43,9 @@ class NodeK {
 	void setData(double x, double y) {
 		lat = x;
 		lng = y;
+	}
+	public String toString() {
+		return "("+this.lat+", "+this.lng+")";
 	}
 }
 
@@ -98,47 +101,48 @@ public class KDTree {
 		}
 	}
 	*/
-	
-	public static NodeK find(NodeK root, double x, double y, int r) {   //rangeSearch e.g(60,40) r=5, 55<x<65, 35<y<45
+	static LinkedList<NodeK> arr = new LinkedList<>();
+	public static void find(NodeK root, double x, double y, int r) { 
+		//rangeSearch e.g(60,40) r=5, 55<x<65, 35<y<45
 		if (root == null) {
-			return null;
-		} else if (x<=root.getX()+r && x>root.getX()-r && y<=root.getY()+r && y>root.getY()-r){
-			//now we check if the node is in the radius
-			double dist = Math.sqrt(Math.pow(Math.abs(root.getX()-x),2) + Math.pow(Math.abs(root.getY()-y), 2));
-			if(dist<=r) return root;
-		} else {
-			if(root.getLev()==1) {
-				if (root.getX()< x-r) {
-					return null;
-				} else if (x+r < root.getX()){
-					return find(root.getLeft(), x,y,r);
-				}else if(x+r >= root.getX()) {
-					if (x<=root.getX()+r && x>root.getX()-r && y<=root.getY()+r && y>root.getY()-r){
-						//check if the node is in the radius
-						double dist = Math.sqrt(Math.pow(Math.abs(root.getX()-x),2) + Math.pow(Math.abs(root.getY()-y), 2));
-						if(dist<=r) return root;
-					}
-					find(root.getRight(), x,y,r);
-					find(root.getLeft(), x,y,r);
+			return;
+		} 
+		if (root.getLev() == 1) {
+			if (root.getX()<(x-r)) {
+				find(root.getRight(), x, y, r);
+				return;
+			}else if(root.getX()>=(x+r)){
+				find(root.getLeft(), x, y, r);
+				return;
+			}else {
+				double dist = Math.sqrt(Math.pow(Math.abs(root.getX()-x),2) 
+						+ Math.pow(Math.abs(root.getY()-y), 2));
+				if(dist<=r) {
+					arr.add(root);
 				}
-			}
-			if(root.getLev()==2) {
-				if(root.getY() < y-r) {   //current node y smaller than minimum range, break
-					return null;
-				}else if (y+r < root.getY()) {   //current node y larger than max range, check left
-					find(root.getLeft(), x,y,r);
-				} else if(y+r >= root.getY()) {   //current node y same as max range, check both left and right
-					if (x<=root.getX()+r && x>root.getX()-r && y<=root.getY()+r && y>root.getY()-r){
-						//check if the node is in the radius
-						double dist = Math.sqrt(Math.pow(Math.abs(root.getX()-x),2) + Math.pow(Math.abs(root.getY()-y), 2));
-						if(dist<=r) return root;
-					}
-					find(root.getRight(), x,y,r);
-					find(root.getLeft(), x,y,r);
-				}
+				find(root.getRight(), x,y,r);
+				find(root.getLeft(), x,y,r);
+				return;
 			}
 		}
-		return null;	
+		if (root.getLev() == 2) {
+			if (root.getY()<(y-r)) {
+				find(root.getRight(), x, y, r);
+				return;
+			}else if(root.getY()>=(y+r)){
+				find(root.getLeft(), x, y, r);
+				return;
+			}else {
+				double dist = Math.sqrt(Math.pow(Math.abs(root.getX()-x),2) 
+						+ Math.pow(Math.abs(root.getY()-y), 2));
+				if(dist<=r) {
+					arr.add(root);
+				}
+				find(root.getRight(), x,y,r);
+				find(root.getLeft(), x,y,r);
+				return;
+			}
+		}
 	}
 	
 	public static Boolean efind(NodeK root, double x, double y) {   //exactSearch
@@ -189,10 +193,17 @@ public class KDTree {
 			size--;
 		}
 		in.close();
-		Boolean res = efind(root, 46.6436,-118.5566);  //return true
-		System.out.println(res);
-	//	Node[] range = find(root, 46.6436,-118.5566,4);
-		//System.out.println(root.getLeft().getX());
-		//inOrder(root);
+		Boolean ex1 = efind(root, 46.6436, -118.5566); //return true
+		System.out.println("City (46.6436, -118.5566) has been found:");
+		System.out.println(ex1);
+		Boolean ex2 = efind(root, 46, -118);//return false
+		System.out.println("City (46.6436, -118.5566) has been found:");
+		System.out.println(ex2);
+		find(root, 46.6436,-118.5566,1);
+		System.out.println();
+		System.out.println("There are "+arr.size()+" citizes in the circle:");
+		for(NodeK node: arr) {
+			System.out.println(node);
+		}
 	}
 }
