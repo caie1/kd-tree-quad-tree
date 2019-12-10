@@ -1,2 +1,16 @@
+Group project Problem 1 by Emma Cai and Camilla Tan.
+
 This project is an implementation of kd-tree and point quad tree.
-The dataset we used is a subset of American cities which only include latitude and longitude
+The dataset we used is a subset of American cities which only include latitude and longitude.
+
+1. Q: Which one is easier to implement?
+   A: kd-tree is easier to implement. For kd-tree, we only need to check the level to proceed, while for quadtree,
+      we need to check if the node is empty, a leaf node or a pointer, and based on the options, we will store node, split 
+      into more nodes, or re-insert previous nodes. Thus, quadtree has more data type involving, it's more complex to implement. 
+   
+2. Q: Which appears to be more space efficient?
+   A: kd-tree is more space efficient. kd-tree is a binary search tree where each node at most has two children, 
+      while quadtree's node either has four children or itself is a leaf node. We could also have empty nodes left in quadtree.
+ 
+3. Q: Which appears to be more time efficient.
+   A: The time complexity of kd-tree is O(logn), while quadtree is O(?).
