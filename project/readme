@@ -64,7 +64,8 @@ The dataset we used is a subset of American cities which only include latitude a
 				This point can't be inserted: (36.4553, -90.1428).
 				
 				The point (48.0028, -122.0964) has been found!
-				This square is located at (47.974609375, -122.16015625). It has length: 0.044921875, height: 0.091796875.
+				This square is located at (47.974609375, -122.16015625). 
+				It has length: 0.044921875, height: 0.091796875.
 				
 				The point (52, -100) didn't existed.
 				
