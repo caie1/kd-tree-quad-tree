@@ -1,0 +1,2 @@
+This project is an implementation of kd-tree and point quad tree.
+The dataset we used is a subset of American cities which only include latitude and longitude
