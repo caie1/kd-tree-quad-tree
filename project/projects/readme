@@ -1,5 +1,3 @@
-Group project Problem 1 by Emma Cai and Camilla Tan.
-
 This project is an implementation of kd-tree and point quadtree.
 The dataset we used is a subset of American cities which only include latitude and longitude.
 
